@@ -19,7 +19,11 @@ class Authed
     {
         // Check if user is logged in and continue request
         if(Auth::check()) {
-            return $next($request);
+
+            // Check the account is verified
+            if(Auth::user()->email_verified_at) {
+                return $next($request);
+            }
         }
 
         // User is not logged in - redirect to login

@@ -16,7 +16,7 @@ class RegisterRequest extends FormRequest
      */
     public function authorize()
     {
-        return !Auth::check();
+        return !Auth::check() || (Auth::user() && !Auth::user()->email_verified_at);
     }
 
     /**

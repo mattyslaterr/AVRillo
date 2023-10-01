@@ -17,12 +17,16 @@ class Guest
      */
     public function handle(Request $request, Closure $next)
     {
-        // Check if user is not logged in and continue request
-        if(!Auth::check()) {
-            return $next($request);
+        // Check if user is logged in
+        if(Auth::check()) {
+
+            // Check if logged in user is verified and redirect to dashboard
+            if(Auth::user()->email_verified_at) {
+                return redirect()->route('dashboard');
+            }
         }
 
-        // User is already logged in - redirect to dashboard
-        return redirect()->route('dashboard');
+        // Continue request as user is not authed and/or unverified
+        return $next($request);
     }
 }
